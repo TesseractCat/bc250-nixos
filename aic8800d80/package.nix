@@ -60,7 +60,7 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/shenmintao/aic8800d80";
     license = with lib.licenses; [
       gpl2Only
-      apache20
+      asl20
       unfreeRedistributableFirmware
     ];
     sourceProvenance = with lib.sourceTypes; [
