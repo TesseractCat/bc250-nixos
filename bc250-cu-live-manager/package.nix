@@ -17,12 +17,12 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "bc250-cu-live-manager";
-  version = "unstable";
+  version = "unstable-2026-06-08";
 
   src = fetchFromGitHub {
     owner = "WinnieLV";
     repo = "bc250-cu-live-manager";
-    rev = "main";
+    rev = "8eb45f07810af738f3e4945ea0cc29d399e378a6";
     hash = "sha256-x//BTB7CdqZyoR4+Hjr3bZcmLk20SCE/9txhGBDUnuE=";
   };
 
@@ -59,9 +59,9 @@ stdenvNoCC.mkDerivation rec {
   '';
 
   meta = {
-    description = "Interactive WGP and CU dispatch control for AMD BC-250 using UMR";
+    description = "Interactive BC-250 CU/WGP live manager using UMR, with TUI controls, safety checks, and boot-table persistence";
     homepage = "https://github.com/WinnieLV/bc250-cu-live-manager";
-    license = lib.licenses.mit;
+    sourceProvenance = with lib.sourceTypes; [ fromSource ];
     platforms = lib.platforms.linux;
     mainProgram = "bc250-cu-live-manager";
   };

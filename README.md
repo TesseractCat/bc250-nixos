@@ -18,6 +18,10 @@ Not really designed with Flakes in mind, but feel free to submit a PR.
     ./path/to/bc250-nixos
   ];
 
+  # Required if enabling hardware.bc250.features.aic8800d80,
+  # because that package includes redistributable binary firmware.
+  nixpkgs.config.allowUnfree = true;
+
   hardware.bc250 = {
     enable = true;
 

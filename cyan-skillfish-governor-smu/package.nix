@@ -11,12 +11,12 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cyan-skillfish-governor-smu";
-  version = "unstable";
+  version = "unstable-2026-06-22";
 
   src = fetchFromGitHub {
     owner = "filippor";
     repo = "cyan-skillfish-governor";
-    rev = "smu";
+    rev = "60ab6e5b354f01f287c73d920990dcd618a674cc";
     hash = "sha256-3XvOVvX0/uvzxnnxS2iP8uaH20V28VIxeQaBljeP4DU=";
   };
 
@@ -60,6 +60,7 @@ rustPlatform.buildRustPackage rec {
     description = "GPU governor for the AMD Cyan Skillfish APU";
     homepage = "https://github.com/filippor/cyan-skillfish-governor/tree/smu";
     license = lib.licenses.mit;
+    sourceProvenance = with lib.sourceTypes; [ fromSource ];
     platforms = lib.platforms.linux;
     mainProgram = "cyan-skillfish-governor-smu";
   };

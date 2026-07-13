@@ -9,12 +9,12 @@
 
 stdenv.mkDerivation rec {
   pname = "aic8800d80";
-  version = "unstable";
+  version = "unstable-2026-06-25";
 
   src = fetchFromGitHub {
     owner = "shenmintao";
     repo = "aic8800d80";
-    rev = "main";
+    rev = "3f9916b6ff63131918712a4b883a1d6dd98804ce";
     hash = "sha256-uRHafdxDqJm7kV6lvWQurVNNRBXz5yrB9AXwEDfik7I=";
   };
 
@@ -58,7 +58,15 @@ stdenv.mkDerivation rec {
   meta = {
     description = "Out-of-tree kernel driver and firmware for AIC8800D80 USB Wi-Fi/Bluetooth adapters";
     homepage = "https://github.com/shenmintao/aic8800d80";
-    license = lib.licenses.unfreeRedistributableFirmware;
+    license = with lib.licenses; [
+      gpl2Only
+      apache20
+      unfreeRedistributableFirmware
+    ];
+    sourceProvenance = with lib.sourceTypes; [
+      fromSource
+      binaryFirmware
+    ];
     platforms = lib.platforms.linux;
   };
 }
