@@ -12,7 +12,7 @@ let
 
   masksCsv = lib.concatMapStringsSep "," (mask:
     if lib.isInt mask then toString mask else mask
-  ) cfg.boot.masks;
+  ) cfg.masks;
 
   configText = ''
     # BC-250 live manager boot profile.
@@ -46,25 +46,21 @@ in
       description = "Optional UMR DRI instance. Empty means auto-detect on each service start.";
     };
 
-    boot = {
-      enable = lib.mkEnableOption "applying a saved BC-250 WGP table at boot";
-
-      masks = lib.mkOption {
-        type = lib.types.listOf (lib.types.oneOf [ lib.types.int lib.types.str ]);
-        default = [ "0x1f" "0x1f" "0x1f" "0x1f" ];
-        description = ''
-          WGP masks to apply at boot in SE0.SH0, SE0.SH1, SE1.SH0, SE1.SH1 order.
-          0x1f routes all five WGPs in a row, so the default is full 40 CU dispatch.
-        '';
-      };
+    masks = lib.mkOption {
+      type = lib.types.listOf (lib.types.oneOf [ lib.types.int lib.types.str ]);
+      default = [ "0x1f" "0x1f" "0x1f" "0x1f" ];
+      description = ''
+        WGP masks to apply at boot in SE0.SH0, SE0.SH1, SE1.SH0, SE1.SH1 order.
+        0x1f routes all five WGPs in a row, so the default is full 40 CU dispatch.
+      '';
     };
   };
 
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = lib.length cfg.boot.masks == 4;
-        message = "services.bc250-cu-live-manager.boot.masks must contain exactly four masks.";
+        assertion = lib.length cfg.masks == 4;
+        message = "services.bc250-cu-live-manager.masks must contain exactly four masks.";
       }
     ];
 
@@ -73,12 +69,12 @@ in
       pkgs.umr
     ];
 
-    environment.etc."bc250-cu-live-manager.conf" = lib.mkIf cfg.boot.enable {
+    environment.etc."bc250-cu-live-manager.conf" = {
       text = configText;
       mode = "0644";
     };
 
-    systemd.services.bc250-cu-live-manager = lib.mkIf cfg.boot.enable {
+    systemd.services.bc250-cu-live-manager = {
       description = "BC-250 CU saved enumeration and dispatch";
       after = [ "systemd-udev-settle.service" ];
       wants = [ "systemd-udev-settle.service" ];

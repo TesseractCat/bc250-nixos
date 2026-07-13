@@ -16,15 +16,10 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "filippor";
     repo = "cyan-skillfish-governor";
-
-    # Prefer replacing this with a commit SHA once you have it building.
     rev = "smu";
-
-    # Run `nix build` once, then replace this with the hash Nix prints.
     hash = "sha256-3XvOVvX0/uvzxnnxS2iP8uaH20V28VIxeQaBljeP4DU=";
   };
 
-  # Run `nix build` once, then replace this with the hash Nix prints.
   cargoHash = "sha256-zlAVGLGnub2Gc0Bkzb5GU9NBAJ2YWLhIG8JOa+1wHx8=";
 
   nativeBuildInputs = [
