@@ -4,16 +4,21 @@
 inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 };
-  outputs = { self, nixpkgs, config }:
-
-    {
-    nixosModules.bc250 = { config, lib, ... }: 
-      import ./default { inherit config lib; };
+  outputs = { self, nixpkgs }:
+  let 
+    # Only one arch supported
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { 
+      inherit system;
+      config.allowUnfree = true;
+       };
+  in 
+  { 
+    nixosModules.bc250 = { config, lib, pkgs, ... }: import ./default { inherit config lib pkgs; };
+        devShells.${system}.default = pkgs.mkShell {
+        name = "bc250-dev";
+    };
 
   };
-  nixosModules.bc250.meta = {
-    description = "Simple NixOS module for BC250.";
-    platforms = [ "x86_64-linux" ];
-    maintainers = ["TesseractCat"];
-  };
+  
 }
