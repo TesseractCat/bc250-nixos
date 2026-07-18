@@ -18,7 +18,7 @@ in
       sensors.enable = lib.mkEnableOption "nct6683 sensor support" // { default = true; };
       cuLiveManager.enable = lib.mkEnableOption "BC-250 CU live manager";
       governor.enable = lib.mkEnableOption "Cyan Skillfish SMU governor" // { default = true; };
-      zram.enable = lib.mkEnableOption "recommended zram settings" // { default = true; };
+      zswap.enable = lib.mkEnableOption "recommended zswap settings" // { default = true; };
     };
   };
 
@@ -42,13 +42,13 @@ in
       services.cyan-skillfish-governor-smu.enable = lib.mkDefault true;
     })
 
-    (lib.mkIf cfg.features.zram.enable {
+    (lib.mkIf cfg.features.zswap.enable {
       boot.kernel.sysctl = {
-        "vm.swappiness" = lib.mkDefault 100;
+        "vm.swappiness" = lib.mkDefault 180;
       };
-      zramSwap = {
+      boot.zswap = {
         enable = lib.mkDefault true;
-        algorithm = lib.mkDefault "lz4";
+        compressor = lib.mkDefault "lz4";
       };
     })
   ]);

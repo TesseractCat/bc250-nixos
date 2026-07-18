@@ -1,9 +1,12 @@
 # bc250-nixos
 
+BC250 docs
+https://elektricm.github.io/amd-bc250-docs
+
 Simple NixOS module for BC250. Comes with wrapper modules and recommended settings for:
- - CPU governor (Cyan Skillfish SMU)
- - ZRam
- - CU unlocking (bc250-cu-live-manager)
+ - CPU governor (Cyan Skillfish SMU) - [docs](https://github.com/filippor/cyan-skillfish-governor)
+ - Enable zswap and fastest compression, recommend leaving zram disabled (nixos default) - [explanation](https://elektricm.github.io/amd-bc250-docs/system/power/?h=zswap#tdp-modification-experimental)
+ - CU unlocking (bc250-cu-live-manager) - [docs](https://github.com/WinnieLV/bc250-cu-live-manager)
     - Make sure to test the stability of your CU unlock before enabling this
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
@@ -33,7 +36,7 @@ Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi
       # Enabled by default
       sensors.enable = true;
       governor.enable = true;
-      zram.enable = true;
+      zswap.enable = true;
     };
   };
 }
@@ -72,9 +75,15 @@ Now you can use it in your configuration:
       # Enabled by default
       sensors.enable = true;
       governor.enable = true;
-      zram.enable = true;
+      zswap.enable = true;
     };
   };
  }
 
 ```
+
+# Credits
+* BC250 Community Discord: https://discord.gg/8eZfFWhczz
+* elektricM et al for https://github.com/elektricM/amd-bc250-docs
+* filippor and magnap for governor
+* WinnieLV and thelamer for bc250-cu-live-manager
