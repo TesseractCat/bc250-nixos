@@ -39,7 +39,7 @@ Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi
 
       # Enabled by default
       sensors.enable = true;
-      governor.enable = true;
+      gpuGovernor.enable = true;
       zswap.enable = true;
     };
   };
@@ -80,7 +80,7 @@ Now you can use it in your configuration:
 
       # Enabled by default
       sensors.enable = true;
-      governor.enable = true;
+      gpuGovernor.enable = true;
       zswap.enable = true;
     };
   };
