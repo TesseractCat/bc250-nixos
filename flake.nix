@@ -17,12 +17,14 @@
       # Reference your package definition files
       bc250-smu-oc = pkgs.callPackage ./bc250-smu-oc/package.nix { };
       bc250-cu-live-manager = pkgs.callPackage ./bc250-cu-live-manager/package.nix { };
+      bc250-memcfg = pkgs.callPackage ./bc250-memcfg/package.nix { };
     in 
     { 
       # Expose the package outputs directly
       packages.${system} = {
         bc250-smu-oc = bc250-smu-oc;
         bc250-cu-live-manager = bc250-cu-live-manager;
+        bc250-memcfg = bc250-memcfg;
       };
 
       nixosModules.bc250 = { config, lib, ... }: import ./default.nix { inherit config lib pkgs; };
@@ -33,6 +35,7 @@
         packages = [
           bc250-smu-oc
           bc250-cu-live-manager
+          bc250-memcfg
           pkgs.amdgpu_top
         ];
       };
