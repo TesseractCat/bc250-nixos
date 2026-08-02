@@ -10,10 +10,11 @@ let
 
   defaultPackage = pkgs.callPackage ./package.nix {};
 
+  tomlFormat = pkgs.formats.toml {};
+
   configFile =
     if cfg.settings != null then
-      pkgs.writeText "cyan-skillfish-governor-smu-config.toml"
-        (lib.generators.toTOML {} cfg.settings)
+      tomlFormat.generate "cyan-skillfish-governor-smu-config.toml" cfg.settings
     else
       cfg.configFile;
 in
