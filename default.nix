@@ -38,6 +38,7 @@ in
         default = "/etc/overclock.conf";
         description = "Path to the generated overclock configuration file.";
       };
+      telemetry.enable = lib.mkEnableOption "BC-250 8-core SMU telemetry + GPU activity kernel patch (rebuilds the kernel)";
       zswap.enable = lib.mkEnableOption "recommended zswap settings" // { default = true; };
     };
   };
@@ -93,6 +94,15 @@ in
     (lib.mkIf cfg.features.cpuOverclock.enable {
       services.bc250-cpu-oc.enable = lib.mkDefault true;
       services.bc250-cpu-oc.configFile = cfg.features.cpuOverclock.configFile;
+    })
+
+    (lib.mkIf cfg.features.telemetry.enable {
+      boot.kernelPatches = [
+        {
+          name = "bc250-8core-telemetry";
+          patch = ./bc250-telemetry/0001-bc250-8core-telemetry.patch;
+        }
+      ];
     })
 
     (lib.mkIf cfg.features.zswap.enable {
