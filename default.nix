@@ -6,6 +6,7 @@ in
 {
   imports = [
     ./aic8800d80/module.nix
+    ./bc250-acpi-fix/module.nix
     ./bc250-cu-live-manager/module.nix
     ./bc250-memcfg/module.nix
     ./cyan-skillfish-governor-smu/module.nix
@@ -19,6 +20,7 @@ in
       aic8800d80.enable = lib.mkEnableOption "AIC8800D80 Wi-Fi/Bluetooth support";
       sensors.enable = lib.mkEnableOption "nct6687 sensor support" // { default = true; };
       cuLiveManager.enable = lib.mkEnableOption "BC-250 CU live manager";
+      acpiFix.enable = lib.mkEnableOption "ACPI table overrides for CPU idle states and frequency scaling";
       vramSplit = lib.mkOption {
         type = lib.types.nullOr lib.types.int;
         default = null;
@@ -72,6 +74,10 @@ in
 
     (lib.mkIf cfg.features.cuLiveManager.enable {
       services.bc250-cu-live-manager.enable = lib.mkDefault true;
+    })
+
+    (lib.mkIf cfg.features.acpiFix.enable {
+      services.bc250-acpi-fix.enable = lib.mkDefault true;
     })
 
     (lib.mkIf (cfg.features.vramSplit != null) {

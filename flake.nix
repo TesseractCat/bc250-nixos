@@ -6,22 +6,24 @@
   };
 
   outputs = { self, nixpkgs }:
-    let 
+    let
       # Only one arch supported
       system = "x86_64-linux";
-      pkgs = import nixpkgs { 
+      pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-      
+
       # Reference your package definition files
+      bc250-acpi-fix = pkgs.callPackage ./bc250-acpi-fix/package.nix { };
       bc250-smu-oc = pkgs.callPackage ./bc250-smu-oc/package.nix { };
       bc250-cu-live-manager = pkgs.callPackage ./bc250-cu-live-manager/package.nix { };
       bc250-memcfg = pkgs.callPackage ./bc250-memcfg/package.nix { };
-    in 
-    { 
+    in
+    {
       # Expose the package outputs directly
       packages.${system} = {
+        bc250-acpi-fix = bc250-acpi-fix;
         bc250-smu-oc = bc250-smu-oc;
         bc250-cu-live-manager = bc250-cu-live-manager;
         bc250-memcfg = bc250-memcfg;
@@ -41,5 +43,5 @@
       };
 
     };
-  
+
 }
