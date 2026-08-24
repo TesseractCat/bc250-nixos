@@ -11,13 +11,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cyan-skillfish-governor-smu";
-  version = "unstable-2026-06-22";
+  version = "unstable-2026-08-12";
 
   src = fetchFromGitHub {
     owner = "filippor";
     repo = "cyan-skillfish-governor";
-    rev = "60ab6e5b354f01f287c73d920990dcd618a674cc";
-    hash = "sha256-3XvOVvX0/uvzxnnxS2iP8uaH20V28VIxeQaBljeP4DU=";
+    rev = "964524d74ba6b69364be39f0e8fa484eb915779e";
+    hash = "sha256-ATUaFp5Z/qH3PsjRPjoPdNJtee3pKG36epCsEtvkXIY=";
   };
 
   cargoHash = "sha256-zlAVGLGnub2Gc0Bkzb5GU9NBAJ2YWLhIG8JOa+1wHx8=";
@@ -39,7 +39,7 @@ rustPlatform.buildRustPackage rec {
        dbus
     ]}
 
-    install -Dm644 default-config.toml \
+    install -Dm644 ${./default-config.toml} \
       "$out/share/${pname}/config.toml"
 
     if [ -f com.cyanskillfish.Governor.conf ]; then

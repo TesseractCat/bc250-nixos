@@ -14,7 +14,11 @@ let
 
   configFile =
     if cfg.settings != null then
-      tomlFormat.generate "cyan-skillfish-governor-smu-config.toml" cfg.settings
+      tomlFormat.generate "cyan-skillfish-governor-smu-config.toml" (
+        lib.recursiveUpdate
+          (builtins.fromTOML (builtins.readFile cfg.configFile))
+          cfg.settings
+      )
     else
       cfg.configFile;
 in
@@ -30,14 +34,14 @@ in
 
     configFile = lib.mkOption {
       type = lib.types.path;
-      default = "${cfg.package}/share/cyan-skillfish-governor-smu/config.toml";
-      defaultText = lib.literalExpression ''
-        "''${config.services.cyan-skillfish-governor-smu.package}/share/cyan-skillfish-governor-smu/config.toml"
-      '';
+      default = ./default-config.toml;
+      defaultText = lib.literalExpression "./default-config.toml";
       description = ''
-        Path to the TOML config file used by the governor.
+        Base TOML config file used by the governor.
 
-        By default this uses upstream default-config.toml installed by the package.
+        Defaults to the vendored upstream default-config.toml. When `settings`
+        is non-null, its values are recursively overlaid on this file and the
+        resulting TOML is used by the governor.
       '';
     };
 
@@ -45,9 +49,11 @@ in
       type = lib.types.nullOr lib.types.attrs;
       default = null;
       description = ''
-        TOML settings to generate as the governor config.
+        TOML settings to recursively overlay on `configFile` and generate as the
+        governor config. Nested TOML tables are merged; scalar values and arrays
+        replace the corresponding values from `configFile`.
 
-        If null, the package's upstream default-config.toml is used.
+        If null, `configFile` is used unchanged.
       '';
     };
 

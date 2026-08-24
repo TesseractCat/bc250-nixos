@@ -54,6 +54,7 @@ Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi
 
       # Make sure to stress test the unlocked cores before relying
       # on them. Triggers a reboot on cold boot to apply the change.
+      # See "GPU governor with core unlock" below when enabling this.
       coreUnlock.enable = false;
 
       # Null by default. Values are in MB.
@@ -122,6 +123,7 @@ Now you can use it in your configuration:
 
       # Make sure to stress test the unlocked cores before relying
       # on them. Triggers a reboot on cold boot to apply the change.
+      # See "GPU governor with core unlock" below when enabling this.
       coreUnlock.enable = false;
       
       # Null by default. Values are in MB.
@@ -153,6 +155,16 @@ Call the devshell to test compute unit (CU) unlock or overclocking before enabli
 
 ```bash
 nix develop github:<replacewithuser>/bc250-nixos --no-write-lock-file
+```
+
+### GPU governor with core unlock
+
+When `hardware.bc250.features.coreUnlock.enable = true`, GPU frequency reporting is
+broken unless the governor's frequency fix is enabled. Set the following alongside
+core unlock:
+
+```nix
+services.cyan-skillfish-governor-smu.settings.gpu-usage.fix-freq = true;
 ```
 
 ## Programs available on PATH
