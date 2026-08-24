@@ -8,6 +8,10 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
 - Enable zswap and fastest compression, recommend leaving zram disabled (NixOS default) - [explanation](https://elektricm.github.io/amd-bc250-docs/system/power/?h=zswap#tdp-modification-experimental)
 - ACPI table overrides for CPU idle states and frequency scaling (bc250-acpi-fix) - [docs](https://github.com/e-tho/bc250-acpi-fix)
   - The stock firmware publishes no P-states and a C-state table that never loads
+- CPU core unlocking, 6c/12t to 8c/16t (bc250-core-unlock) - [docs](https://github.com/rw-r-r-0644/bc250-core-unlock)
+  - Make sure to stress test the unlocked cores before relying on them
+  - Triggers a reboot on cold boot to apply the change; warm reboots are unaffected
+  - Append the `bc250.nocoreunlock` kernel parameter at the bootloader to skip the unlock for one boot
 - CU unlocking (bc250-cu-live-manager) - [docs](https://github.com/WinnieLV/bc250-cu-live-manager)
   - Make sure to test the stability of your CU unlock before enabling this
 - CPU overclocking and undervolting (bc250_smu_oc) - [docs](https://github.com/bc250-collective/bc250_smu_oc/)
@@ -47,6 +51,10 @@ Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi
       # conflicts, check first and either turn those off in the BIOS setup
       # or leave this disabled.
       acpiFix.enable = false;
+
+      # Make sure to stress test the unlocked cores before relying
+      # on them. Triggers a reboot on cold boot to apply the change.
+      coreUnlock.enable = false;
 
       # Null by default. Values are in MB.
       # vramSplit writes UMA_SIZE with bc250memcfg only if CMOS differs.
@@ -111,6 +119,10 @@ Now you can use it in your configuration:
       # conflicts, check first and either turn those off in the BIOS setup
       # or leave this disabled.
       acpiFix.enable = false;
+
+      # Make sure to stress test the unlocked cores before relying
+      # on them. Triggers a reboot on cold boot to apply the change.
+      coreUnlock.enable = false;
       
       # Null by default. Values are in MB.
       # vramSplit writes UMA_SIZE with bc250memcfg only if CMOS differs.
