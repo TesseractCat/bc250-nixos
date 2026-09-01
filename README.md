@@ -20,6 +20,10 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
   - Static VRAM/UMA split configuration using [bc250_memcfg](https://github.com/fanoush/bc250_memcfg)
   - Dynamic VRAM split limit using `ttm.pages_limit`
 - NCT6687 sensor driver for additional sensors and fan control
+- amdgpu patches for the BC-250 (bc250-amdgpu) - [docs](https://github.com/MastaG/linux-cachyos-bc250)
+  - Fixes GPU bugs that prevent the compute queue from working
+  - Optional 40 CU unlock, enabling the 16 compute units that come disabled. Use the `amdgpu.disable_cu` kernel parameter to mask unstable CUs
+  - Make sure to test the unlocked compute units before relying on them
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
@@ -56,6 +60,14 @@ Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi
       # on them. Triggers a reboot on cold boot to apply the change.
       # See "GPU governor with core unlock" below when enabling this.
       coreUnlock.enable = false;
+
+      # Rebuilds the amdgpu driver on kernel updates. The patches target a
+      # specific kernel version and may fail to apply after a nixpkgs bump.
+      # Make sure to test the unlocked compute units before relying on them.
+      gpuPatches = {
+        enable = false;
+        cuUnlock.enable = false;
+      };
 
       # Null by default. Values are in MB.
       # vramSplit writes UMA_SIZE with bc250memcfg only if CMOS differs.
@@ -125,6 +137,14 @@ Now you can use it in your configuration:
       # on them. Triggers a reboot on cold boot to apply the change.
       # See "GPU governor with core unlock" below when enabling this.
       coreUnlock.enable = false;
+
+      # Rebuilds the amdgpu driver on kernel updates. The patches target a
+      # specific kernel version and may fail to apply after a nixpkgs bump.
+      # Make sure to test the unlocked compute units before relying on them.
+      gpuPatches = {
+        enable = false;
+        cuUnlock.enable = false;
+      };
       
       # Null by default. Values are in MB.
       # vramSplit writes UMA_SIZE with bc250memcfg only if CMOS differs.
