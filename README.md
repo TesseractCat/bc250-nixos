@@ -26,6 +26,8 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
   - Make sure to test the unlocked compute units before relying on them
   - Fixes GPU load and clock reporting, which the stock driver gets wrong on this hardware
   - On 8-core boards, decodes per-core telemetry. Set `amdgpu.cs_legacy_8core_metrics=0` if your BIOS unlocks the cores itself
+  - Widens the GPU clock range to 350–2230 MHz, so the governor can reach the full range
+  - Experimental ROCm TLB flush workaround, off by default. Enable with `amdgpu.bc250_flush_by_runlist=1`
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
