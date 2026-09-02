@@ -48,5 +48,12 @@ in
         }
       ];
     })
+
+    (lib.mkIf config.services.bc250-core-unlock.enable {
+      # bc250-core-unlock enables the two disabled cores without changing the
+      # firmware's metrics layout. This tells the telemetry patch where
+      # unpatched firmware puts each core's sensor values.
+      boot.kernelParams = [ "amdgpu.cs_legacy_8core_metrics=1" ];
+    })
   ]);
 }

@@ -30,6 +30,7 @@ kernel.stdenv.mkDerivation {
     ./patches/0001-gfx1013-pasid-tlb-invalidation.patch
     ./patches/0002-gfx1013-compute-gfxoff-guard.patch
     ./patches/0003-bc250-40cu-unlock.patch
+    ./patches/0004-bc250-8core-telemetry-gpu-activity.patch
   ];
 
   kernelDev = kernel.dev;

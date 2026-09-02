@@ -24,6 +24,8 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
   - Enables the GPU's compute queue, which Linux disables on this hardware. Games using async compute gain noticeably; others are unaffected
   - Optional 40 CU unlock, enabling the 16 compute units that come disabled. Use the `amdgpu.disable_cu` kernel parameter to mask unstable CUs
   - Make sure to test the unlocked compute units before relying on them
+  - Fixes GPU load and clock reporting, which the stock driver gets wrong on this hardware
+  - On 8-core boards, decodes per-core telemetry. Set `amdgpu.cs_legacy_8core_metrics=0` if your BIOS unlocks the cores itself
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
