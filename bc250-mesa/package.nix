@@ -7,6 +7,10 @@ mesa.overrideAttrs (prev: {
 
   patches = (prev.patches or [ ]) ++ [
     ./patches/0001-gfx1013-compute-queue-fix.patch
+    ./patches/0002-gfx1013-mesh-task-shaders.patch
+    ./patches/0003-gfx1013-taskmesh-queries.patch
+    ./patches/0004-radv-gfx103.patch
+    ./patches/0005-bc250-fsr4-v3.patch
   ];
 
   meta = prev.meta // {

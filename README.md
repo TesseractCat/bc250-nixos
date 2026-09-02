@@ -28,6 +28,8 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
   - On 8-core boards, decodes per-core telemetry. Set `amdgpu.cs_legacy_8core_metrics=0` if your BIOS unlocks the cores itself
   - Widens the GPU clock range to 350–2230 MHz, so the governor can reach the full range
   - Experimental ROCm TLB flush workaround, off by default. Enable with `amdgpu.bc250_flush_by_runlist=1`
+  - Experimental mesh shader support, per-game via `RADV_GFX103=1`. Task shaders are still broken, so games using them may hang
+  - Faster FSR4 upscaling on this GPU, which lacks the hardware instruction FSR4 expects
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
