@@ -37,6 +37,6 @@ in
     ];
 
     hardware.graphics.package = cfg.package;
-    hardware.graphics.package32 = cfg.package32;
+    hardware.graphics.package32 = lib.mkIf config.hardware.graphics.enable32Bit cfg.package32;
   };
 }
