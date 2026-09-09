@@ -26,14 +26,15 @@ kernel.stdenv.mkDerivation {
   # mismatch prevents the module from loading.
   buildInputs = [ zlib ];
 
+  # Numbered as in https://github.com/MastaG/linux-cachyos-bc250
   patches = [
-    ./patches/0001-gfx1013-pasid-tlb-invalidation.patch
-    ./patches/0002-gfx1013-compute-gfxoff-guard.patch
-    ./patches/0003-bc250-40cu-unlock.patch
-    ./patches/0004-bc250-8core-telemetry-gpu-activity.patch
-    ./patches/0005-cyan-skillfish-sclk-range.patch
+    ./patches/0001-bc250-8core-telemetry-gpu-activity.patch
+    ./patches/0004-gfx1013-pasid-tlb-invalidation.patch
+    ./patches/0005-gfx1013-compute-gfxoff-guard.patch
     ./patches/0006-bc250-kfd-flush-tlb-by-runlist.patch
     ./patches/0007-amdgpu-ttm-null-page-guard.patch
+    ./patches/0008-cyan-skillfish-sclk-range.patch
+    ./patches/0009-bc250-40cu-unlock.patch
   ];
 
   kernelDev = kernel.dev;
