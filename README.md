@@ -21,15 +21,8 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
   - Dynamic VRAM split limit using `ttm.pages_limit`
 - NCT6687 sensor driver for additional sensors and fan control
 - amdgpu and Mesa patches for the BC-250 (bc250-amdgpu, bc250-mesa) - [docs](https://github.com/MastaG/linux-cachyos-bc250)
-  - Enables the GPU's compute queue, which Linux disables on this hardware. Games using async compute gain noticeably; others are unaffected
-  - Optional 40 CU unlock, enabling the 16 compute units that come disabled. Use the `amdgpu.disable_cu` kernel parameter to mask unstable CUs
-  - Make sure to test the unlocked compute units before relying on them
-  - Fixes GPU load and clock reporting, which the stock driver gets wrong on this hardware
-  - On 8-core boards, decodes per-core telemetry. Set `amdgpu.cs_legacy_8core_metrics=0` if your BIOS unlocks the cores itself
-  - Widens the GPU clock range to 350–2230 MHz, so the governor can reach the full range
-  - Experimental ROCm TLB flush workaround, off by default. Enable with `amdgpu.bc250_flush_by_runlist=1`
-  - Experimental mesh shader support, per-game via `RADV_GFX103=1`. Task shaders are still broken, so games using them may hang
-  - Faster FSR4 upscaling on this GPU, which lacks the hardware instruction FSR4 expects
+  - Enables the GPU's compute queue, fixes load and clock reporting, widens the clock range, and speeds up FSR4
+  - Optional 40 CU unlock, enabling the 16 compute units that come disabled. Make sure to test them before relying on them
 
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
