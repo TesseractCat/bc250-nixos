@@ -11,6 +11,9 @@ mesa.overrideAttrs (prev: {
     ./patches/0003-gfx1013-taskmesh-queries.patch
     ./patches/0004-radv-gfx103.patch
     ./patches/0005-bc250-fsr4-v3.patch
+    ./patches/0006-bc250-fsr4-combined-unroll.patch
+    ./patches/0007-bc250-fsr4-imageprep-texture.patch
+    ./patches/0008-bc250-fsr4-resolution-variants.patch
   ];
 
   meta = prev.meta // {
