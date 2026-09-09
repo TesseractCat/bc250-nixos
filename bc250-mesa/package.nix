@@ -14,11 +14,11 @@ mesa.overrideAttrs (prev: {
   ];
 
   meta = prev.meta // {
-    description = "Mesa patched to expose the GFX1013 compute queue on the AMD BC-250";
+    description = "Mesa patched with GFX1013 fixes for the AMD BC-250";
     longDescription = ''
       Exposes the dedicated compute queue on GFX1013 and routes it through the
       async-compute threadgroup workaround. Requires the matching patched
-      amdgpu module; without it the GPU hangs. Patch from
+      amdgpu module; without it the GPU hangs. Patches from
       https://github.com/MastaG/linux-cachyos-bc250.
     '';
   };
