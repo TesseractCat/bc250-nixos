@@ -16,6 +16,7 @@
 
       # Reference your package definition files
       bc250-acpi-fix = pkgs.callPackage ./bc250-acpi-fix/package.nix { };
+      bc250-mesa = pkgs.callPackage ./bc250-mesa/package.nix { };
       bc250-smu-oc = pkgs.callPackage ./bc250-smu-oc/package.nix { };
       bc250-cu-live-manager = pkgs.callPackage ./bc250-cu-live-manager/package.nix { };
       bc250-memcfg = pkgs.callPackage ./bc250-memcfg/package.nix { };
@@ -24,6 +25,7 @@
       # Expose the package outputs directly
       packages.${system} = {
         bc250-acpi-fix = bc250-acpi-fix;
+        bc250-mesa = bc250-mesa;
         bc250-smu-oc = bc250-smu-oc;
         bc250-cu-live-manager = bc250-cu-live-manager;
         bc250-memcfg = bc250-memcfg;

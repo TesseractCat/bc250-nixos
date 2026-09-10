@@ -7,9 +7,11 @@ in
   imports = [
     ./aic8800d80/module.nix
     ./bc250-acpi-fix/module.nix
+    ./bc250-amdgpu/module.nix
     ./bc250-core-unlock/module.nix
     ./bc250-cu-live-manager/module.nix
     ./bc250-memcfg/module.nix
+    ./bc250-mesa/module.nix
     ./cyan-skillfish-governor-smu/module.nix
     ./bc250-smu-oc/module.nix
   ];
@@ -43,6 +45,10 @@ in
         description = "Path to the generated overclock configuration file.";
       };
       zswap.enable = lib.mkEnableOption "recommended zswap settings" // { default = true; };
+      gpuPatches = {
+        enable = lib.mkEnableOption "amdgpu and Mesa patches for the BC-250";
+        cuUnlock.enable = lib.mkEnableOption "40 CU unlock";
+      };
     };
   };
 
@@ -115,6 +121,13 @@ in
         enable = lib.mkDefault true;
         compressor = lib.mkDefault "lz4";
       };
+    })
+
+    (lib.mkIf cfg.features.gpuPatches.enable {
+      hardware.bc250-amdgpu.enable = lib.mkDefault true;
+      hardware.bc250-amdgpu.cuUnlock.enable =
+        lib.mkDefault cfg.features.gpuPatches.cuUnlock.enable;
+      hardware.bc250-mesa.enable = lib.mkDefault true;
     })
   ]);
 }
