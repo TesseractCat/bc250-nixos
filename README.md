@@ -24,7 +24,7 @@ Simple NixOS module for BC250. Comes with wrapper modules and recommended settin
 Also comes with a wrapper for the AIC8800d80 driver, a chipset used in some WiFi dongles.
 
 Finally, this repo also includes a number of kernel/Mesa patches written by community members.
-These patches are optional, but include game compatibility, usability, and performance improvements.
+These patches are optional, but include game compatibility, usability, and performance improvements:
 - amdgpu and Mesa patches for the BC-250 (bc250-amdgpu, bc250-mesa) - [docs](https://github.com/MastaG/linux-cachyos-bc250)
   - Enables the GPU's compute queue, fixes load and clock reporting, widens the clock range, and speeds up FSR4
   - Optional 40 CU unlock, enabling the 16 compute units that come disabled. Make sure to test them before relying on them.
