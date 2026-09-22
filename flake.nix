@@ -20,6 +20,7 @@
       bc250-smu-oc = pkgs.callPackage ./bc250-smu-oc/package.nix { };
       bc250-cu-live-manager = pkgs.callPackage ./bc250-cu-live-manager/package.nix { };
       bc250-memcfg = pkgs.callPackage ./bc250-memcfg/package.nix { };
+      bc250-smu-patch = pkgs.callPackage ./bc250-smu-patch/package.nix { };
     in
     {
       # Expose the package outputs directly
@@ -29,6 +30,7 @@
         bc250-smu-oc = bc250-smu-oc;
         bc250-cu-live-manager = bc250-cu-live-manager;
         bc250-memcfg = bc250-memcfg;
+        bc250-smu-patch = bc250-smu-patch;
       };
 
       nixosModules.bc250 = { config, lib, ... }: import ./default.nix { inherit config lib pkgs; };
@@ -40,6 +42,7 @@
           bc250-smu-oc
           bc250-cu-live-manager
           bc250-memcfg
+          bc250-smu-patch
           pkgs.amdgpu_top
         ];
       };

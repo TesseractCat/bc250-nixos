@@ -14,6 +14,7 @@ in
     ./bc250-mesa/module.nix
     ./cyan-skillfish-governor-smu/module.nix
     ./bc250-smu-oc/module.nix
+    ./bc250-smu-patch/module.nix
   ];
 
   options.hardware.bc250 = {
@@ -25,6 +26,7 @@ in
       cuLiveManager.enable = lib.mkEnableOption "BC-250 CU live manager";
       acpiFix.enable = lib.mkEnableOption "ACPI table overrides for CPU idle states and frequency scaling";
       coreUnlock.enable = lib.mkEnableOption "BC-250 CPU core unlock (6c/12t to 8c/16t)";
+      smuPatch.enable = lib.mkEnableOption "Apply BC-250 SMU SRAM patches (unlock + RPC + 8-core metrics) at boot";
       vramSplit = lib.mkOption {
         type = lib.types.nullOr lib.types.int;
         default = null;
@@ -90,6 +92,10 @@ in
 
     (lib.mkIf cfg.features.coreUnlock.enable {
       services.bc250-core-unlock.enable = lib.mkDefault true;
+    })
+
+    (lib.mkIf cfg.features.smuPatch.enable {
+      services.bc250-smu-patch.enable = lib.mkDefault true;
     })
 
     (lib.mkIf (cfg.features.vramSplit != null) {
