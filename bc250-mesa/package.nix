@@ -14,6 +14,7 @@ mesa.overrideAttrs (prev: {
     ./patches/0006-bc250-fsr4-combined-unroll.patch
     ./patches/0007-bc250-fsr4-imageprep-texture.patch
     ./patches/0008-bc250-fsr4-resolution-variants.patch
+    ./patches/0009-bc250-fsr4-production-defaults.patch
   ];
 
   meta = prev.meta // {
