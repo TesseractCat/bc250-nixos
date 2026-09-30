@@ -2,18 +2,18 @@
   lib,
   python3Packages,
   fetchFromGitHub,
-  stress
+  stress,
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "bc250_smu_oc";
-  version = "unstable-2026-07-18";
+  version = "unstable-2026-09-27";
 
   src = fetchFromGitHub {
     owner = "bc250-collective";
     repo = "bc250_smu_oc";
-    rev = "main";
-    hash = "sha256-jUeUUzc0ezs+KrRmJvg9nVR0kWW4T3pAedh8v42Zd1g=";
+    rev = "327014d6515d7108b1144adfa7203b4cc2eefd0b";
+    hash = "sha256-YKzdUiDJRoEubvms263DD6CfaZhj8S5kigOoIS+shfA=";
   };
 
   pyproject = true;
