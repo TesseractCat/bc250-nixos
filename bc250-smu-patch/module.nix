@@ -29,13 +29,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = config.boot.initrd.systemd.enable;
-        message = "services.bc250-smu-patch requires boot.initrd.systemd.enable";
-      }
-    ];
-
     warnings = lib.optional
       (!config.hardware.bc250-amdgpu.enable)
       "services.bc250-smu-patch is enabled without the amdgpu patches (hardware.bc250-amdgpu.enable); 8-core telemetry will read incorrectly.";

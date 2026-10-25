@@ -161,6 +161,8 @@ Now you can use it in your configuration:
 }
 ```
 
+### Devshell
+
 Call the devshell to test compute unit (CU) unlock or overclocking before enabling:
 
 ```bash
@@ -176,6 +178,23 @@ core unlock:
 ```nix
 services.cyan-skillfish-governor-smu.settings.gpu-usage.fix-freq = true;
 ```
+
+### AIC8800D80 hardware revision
+
+The upstream driver has two separate variants. For adapters whose boot
+log reports `chip_id=7, chip_mcu_id=1`, select the matched legacy variant:
+
+```nix
+hardware.aic8800d80.variant = "legacy-mcu1";
+```
+
+Check the detected revision with:
+
+```bash
+journalctl -k -b | grep chip_mcu_id
+```
+
+See https://github.com/shenmintao/aic8800d80 for more information.
 
 ## Programs available on PATH
 

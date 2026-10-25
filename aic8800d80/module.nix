@@ -15,15 +15,27 @@ in
   options.hardware.aic8800d80 = {
     enable = lib.mkEnableOption "AIC8800D80 USB Wi-Fi/Bluetooth adapter support";
 
+    variant = lib.mkOption {
+      type = lib.types.enum [ "main" "legacy-mcu1" ];
+      default = "main";
+      description = ''
+        Upstream firmware/driver variant. Use "legacy-mcu1" only when the
+        kernel log reports `chip_id=7, chip_mcu_id=1`; use "main" for
+        `chip_mcu_id=0` or when the MCU revision is unknown.
+      '';
+    };
+
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.callPackage ./package.nix {
+        inherit (cfg) variant;
         kernel = config.boot.kernelPackages.kernel;
         utilLinux = pkgs.util-linux;
         usbModeswitch = pkgs.usb-modeswitch;
       };
       defaultText = lib.literalExpression ''
         pkgs.callPackage ./package.nix {
+          variant = config.hardware.aic8800d80.variant;
           kernel = config.boot.kernelPackages.kernel;
           utilLinux = pkgs.util-linux;
           usbModeswitch = pkgs.usb-modeswitch;

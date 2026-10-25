@@ -20,16 +20,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = config.boot.initrd.systemd.enable;
-        message = ''
-          services.bc250-core-unlock requires boot.initrd.systemd.enable, as the
-          unlock runs as a systemd unit in the initrd.
-        '';
-      }
-    ];
-
     boot.initrd.systemd.storePaths = [ (lib.getExe cfg.package) ];
 
     boot.initrd.systemd.services.bc250-core-unlock = {

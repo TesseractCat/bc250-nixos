@@ -3,27 +3,48 @@
   stdenv,
   fetchFromGitHub,
   kernel,
+  kernelModuleMakeFlags ? lib.filter (flag: !(lib.hasPrefix "O=" flag)) kernel.makeFlags,
   utilLinux,
   usbModeswitch,
+  variant ? "main",
 }:
+
+let
+  sources = {
+    main = {
+      date = "2026-10-23";
+      rev = "f9ab41822373efe70649d011edb587d1170364e7";
+      hash = "sha256-FkIW3qqQLNO+wxVVmJp+igPx5owe+4Z605nNB/9xN/M=";
+    };
+    "legacy-mcu1" = {
+      date = "2026-10-21";
+      rev = "a9683a456079131a0381ed75fb7a4f5514527b3c";
+      hash = "sha256-yK71pZuw8H2JpidoexrrmkJ/puoxkN36gHtpMf+QZxU=";
+    };
+  };
+  source = sources.${variant} or (throw "Unsupported AIC8800D80 variant: ${variant}");
+in
 
 stdenv.mkDerivation rec {
   pname = "aic8800d80";
-  version = "unstable-2026-06-25";
+  version = "unstable-${source.date}-${variant}";
 
   src = fetchFromGitHub {
     owner = "shenmintao";
     repo = "aic8800d80";
-    rev = "3f9916b6ff63131918712a4b883a1d6dd98804ce";
-    hash = "sha256-uRHafdxDqJm7kV6lvWQurVNNRBXz5yrB9AXwEDfik7I=";
+    inherit (source) rev hash;
   };
 
   nativeBuildInputs = kernel.moduleBuildDependencies;
+  __structuredAttrs = true;
 
-  makeFlags = [
-    "KVER=${kernel.modDirVersion}"
-    "KDIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
+  makeFlags = kernelModuleMakeFlags ++ [
+    "INSTALL_MOD_DIR=updates/aic8800"
+    "DEPMOD=true"
   ];
+
+  # Kbuild strips modules before generating their certificates at install time.
+  dontStrip = true;
 
   postPatch = ''
     substituteInPlace aic.rules \
@@ -32,23 +53,32 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     runHook preBuild
-    make -C drivers/aic8800 \
-      KVER=${kernel.modDirVersion} \
-      KDIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build
+    local -a flagsArray
+    concatTo flagsArray makeFlags makeFlagsArray
+    make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
+      M="$PWD/drivers/aic8800" "''${flagsArray[@]}" modules
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
 
-    modDir=$out/lib/modules/${kernel.modDirVersion}/kernel/drivers/net/wireless/aic8800
-    mkdir -p "$modDir"
-    install -Dm644 drivers/aic8800/aic8800_fdrv/aic8800_fdrv.ko "$modDir/aic8800_fdrv.ko"
-    install -Dm644 drivers/aic8800/aic_load_fw/aic_load_fw.ko "$modDir/aic_load_fw.ko"
+    local -a flagsArray
+    concatTo flagsArray makeFlags makeFlagsArray
+    make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
+      M="$PWD/drivers/aic8800" "''${flagsArray[@]}" INSTALL_MOD_PATH="$out" INSTALL_MOD_STRIP=1 modules_install
 
     mkdir -p $out/lib/firmware
     cp -r fw/* $out/lib/firmware/
 
+    install -d $out/libexec
+    printf '%s\n' \
+      '#!${stdenv.shell}' \
+      'exec ${usbModeswitch}/bin/usb_modeswitch -c /etc/usb_modeswitch.d/1111:1111' \
+      > $out/libexec/aic8800-mode-switch
+    chmod 755 $out/libexec/aic8800-mode-switch
+    sed -i '/ATTR{idVendor}=="1111"/c\
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1111", ATTR{idProduct}=="1111", RUN+="'"$out"'/libexec/aic8800-mode-switch"' aic.rules
     install -Dm644 aic.rules $out/lib/udev/rules.d/90-aic8800-mode-switch.rules
     install -Dm644 usb_modeswitch/1111_1111 $out/etc/usb_modeswitch.d/1111:1111
 

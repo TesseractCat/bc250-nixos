@@ -22,7 +22,7 @@ in
   config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = config.boot.initrd.systemd.enable -> config.boot.loader.supportsInitrdSecrets or true;
+        assertion = config.boot.loader.supportsInitrdSecrets or true;
         message = "services.bc250-acpi-fix requires an initrd the bootloader loads unmodified.";
       }
     ];
